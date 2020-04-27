@@ -1,0 +1,280 @@
+openapi: 3.0.0
+servers:
+  - description: Windows Server Resource Monitor
+    url: 'http://localhost:8080/v1'
+info:
+  description: Windows Server Resource Monitor Default API
+  version: "1.0.0"
+  title: Windows Server Resource Monitor
+  contact:
+    email: kaguchokamioda@gmail.com
+  license:
+    name: MIT
+tags:
+  - name: auth
+    description: User auth
+  - name: Resource
+    description: Get resource information
+paths:
+  /auth:
+    post:
+      tags:
+        - auth
+      summary: sign in
+      parameters:
+        - in: body
+          name: id
+          description: User ID
+          required: true
+          schema:
+            type: string
+        - in: body
+          name: pass
+          description: password
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success
+          content:
+            text/plain:
+              schema:
+                type: string
+    delete:
+      tags:
+        - auth
+      summary: sign out
+      parameters:
+        - in: cookie
+          name: AccessToken
+          description: Authorized user access token created server
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success
+  /newuser:
+    post:
+      tags:
+        - auth
+      summary: sign up
+      parameters:
+        - in: body
+          name: id
+          description: User ID
+          required: true
+          schema:
+            type: string
+        - in: body
+          name: pass
+          description: password
+          required: true
+          schema:
+            type: string
+        - in: cookie
+          name: AccessToken
+          description: Authorized user access token created server
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success
+          content:
+            text/plain:
+              schema:
+                type: string
+  /:
+    get:
+      tags:
+        - Resource
+      summary: Get all resources
+      parameters:
+        - in: cookie
+          name: AccessToken
+          description: Authorized user access token created server
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: all server status
+          content:
+            application/json:
+              schema:
+                type: object
+  /cpu:
+    get:
+      tags:
+        - Resource
+      summary: Get CPU informations
+      parameters:
+        - in: cookie
+          name: AccessToken
+          description: Authorized user access token created server
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: memory status on server
+          content:
+            application/json:
+              schema:
+                type: object
+  /mem:
+    get:
+      tags:
+        - Resource
+      summary: Get memory informations
+      parameters:
+        - in: cookie
+          name: AccessToken
+          description: Authorized user access token created server
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: memory status on server
+          content:
+            application/json:
+              schema:
+                type: object
+  /disk/:
+    get:
+      tags:
+        - Resource
+      summary: Get all disk informations
+      parameters:
+        - in: cookie
+          name: AccessToken
+          description: Authorized user access token created server
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: all disk status server monitors
+          content:
+            application/json:
+              schema:
+                type: object
+  '/disk/{DriveLetter}':
+    get:
+      tags:
+        - Resource
+      summary: Get reserved disk informations
+      parameters:
+        - in: path
+          name: DriveLetter
+          description: Drive letter server monitors
+          required: true
+          schema:
+            type: string
+            example: C
+        - in: cookie
+          name: AccessToken
+          description: Authorized user access token created server
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: reserved disk status on server monitors
+          content:
+            application/json:
+              schema:
+                type: object
+  /network/:
+    get:
+      tags:
+        - Resource
+      summary: Get all network informations
+      parameters:
+        - in: cookie
+          name: AccessToken
+          description: Authorized user access token created server
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: all network status on server
+          content:
+            application/json:
+              schema:
+                type: object
+  '/network/{NetworkID}':
+    get:
+      tags:
+        - Resource
+      summary: Get reserved network informations
+      parameters:
+        - in: path
+          name: NetworkID
+          description: Order of Network adpter server monitors
+          required: true
+          schema:
+            type: string
+            example: eth0
+        - in: cookie
+          name: AccessToken
+          description: Authorized user access token created server
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: reserved netwok status on server
+          content:
+            application/json:
+              schema:
+                type: object
+  /service/:
+    get:
+      tags:
+        - Resource
+      summary: Get service informations
+      parameters:
+        - in: cookie
+          name: AccessToken
+          description: Authorized user access token created server
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: service status on server
+          content:
+            application/json:
+              schema:
+                type: object
+  '/sevice/{ServiceName}':
+    get:
+      tags:
+        - Resource
+      summary: Get reserved sevice informations
+      parameters:
+        - in: path
+          name: ServiceName
+          description: Windows Service name server monitors
+          required: true
+          schema:
+            type: string
+            example: wuauserv
+        - in: cookie
+          name: AccessToken
+          description: Authorized user access token created server
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: reserved sevice status on server
+          content:
+            application/json:
+              schema:
+                type: object
